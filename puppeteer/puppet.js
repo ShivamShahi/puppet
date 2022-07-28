@@ -4,6 +4,7 @@ const sqlite3 = require("sqlite3").verbose();
 function addBooksToDb(bookObj) {
   // open the database connection
   let db = new sqlite3.Database("sample.db");
+  db.get("PRAGMA foreign_keys = ON");
 
   let sql = `INSERT INTO books(name, price, rating) VALUES('${bookObj.name}', '${bookObj.price}', '${bookObj.rating}') `;
   db.run(sql, function (err) {
@@ -19,6 +20,7 @@ function addBooksToDb(bookObj) {
 function addCategoryToDb(category) {
   // open the database connection
   let db = new sqlite3.Database("sample.db");
+  db.get("PRAGMA foreign_keys = ON");
 
   let sql = `INSERT INTO categories(name) VALUES('${category}') `;
   db.run(sql, function (err) {
