@@ -1,40 +1,10 @@
-const puppeteer = require("puppeteer");
-const sqlite3 = require("sqlite3").verbose();
+import { launch } from "puppeteer";
+import { addBooksToDb } from "../sqlite/db_methods.js";
+import { addCategoryToDb } from "../sqlite/db_methods.js";
 
-function addBooksToDb(bookObj) {
-  // open the database connection
-  let db = new sqlite3.Database("sample.db");
-  db.get("PRAGMA foreign_keys = ON");
-
-  let sql = `INSERT INTO books(name, price, rating) VALUES('${bookObj.name}', '${bookObj.price}', '${bookObj.rating}') `;
-  db.run(sql, function (err) {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log(`Rows inserted ${this.changes}`);
-  });
-  // close the database connection
-  db.close();
-}
-
-function addCategoryToDb(category) {
-  // open the database connection
-  let db = new sqlite3.Database("sample.db");
-  db.get("PRAGMA foreign_keys = ON");
-
-  let sql = `INSERT INTO categories(name) VALUES('${category}') `;
-  db.run(sql, function (err) {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log(`Rows inserted ${this.changes}`);
-  });
-  // close the database connection
-  db.close();
-}
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await launch({ headless: false });
   const page = await browser.newPage();
   await page.goto("https://books.toscrape.com/");
 
@@ -45,7 +15,6 @@ function addCategoryToDb(category) {
     let links = {};
 
     booksCategories.forEach((category) => {
-      console.log(category.querySelectorAll("a"));
       links[category.innerText] = category.href;
     });
 
@@ -97,7 +66,7 @@ function addCategoryToDb(category) {
           name: name,
           price: price,
           rating: rating,
-          category: category,
+          category: category.toString(),
         });
 
         bookList.push({

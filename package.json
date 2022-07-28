@@ -11,5 +11,6 @@
   "dependencies": {
     "puppeteer": "^15.5.0",
     "sqlite3": "^5.0.10"
-  }
+  },
+  "type": "module"
 }
