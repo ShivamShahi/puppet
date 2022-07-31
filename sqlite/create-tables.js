@@ -8,7 +8,7 @@ function createDb() {
     "CREATE TABLE categories(name text unique, id INTEGER PRIMARY KEY AUTOINCREMENT)"
   );
   db.run(
-    "CREATE TABLE books(ID INTEGER PRIMARY KEY AUTOINCREMENT, name text, price text, rating text, categoryId INTEGER, FOREIGN KEY(categoryId) REFERENCES categories(id))"
+    "CREATE TABLE books(ID INTEGER PRIMARY KEY AUTOINCREMENT, name text, price text, rating text, category_name text, categoryId INTEGER, FOREIGN KEY(categoryId) REFERENCES categories(id))"
   );
 
   db.close();

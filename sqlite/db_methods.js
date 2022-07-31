@@ -19,7 +19,7 @@ export function addBooksToDb(bookObj) {
   let category_id = getCategoryId(bookObj.category);
   console.log(category_id); // problem, can't assign var in async method. so getting undefined here
 
-  let sql = `INSERT INTO books(name, price, rating) VALUES('${bookObj.name}', '${bookObj.price}', '${bookObj.rating}') `;
+  let sql = `INSERT INTO books(name, price, rating, category_name) VALUES('${bookObj.name}', '${bookObj.price}', '${bookObj.rating}', '${bookObj.category}') `;
   db.run(sql, function (err) {
     if (err) {
       return console.error(err.message);

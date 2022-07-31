@@ -2,9 +2,11 @@ import { launch } from "puppeteer";
 import { addBooksToDb } from "../sqlite/db_methods.js";
 import { addCategoryToDb } from "../sqlite/db_methods.js";
 
-
 (async () => {
-  const browser = await launch({ headless: false }, {args: ['--window-size=800,400']});
+  const browser = await launch(
+    { headless: false },
+    { args: ["--window-size=800,400"] }
+  );
   const page = await browser.newPage();
   await page.goto("https://books.toscrape.com/");
 
@@ -22,17 +24,13 @@ import { addCategoryToDb } from "../sqlite/db_methods.js";
   });
 
   //   console.log(categoryLinks);
-  let categoryBookMap = {};
 
   for (let category in categoryLinks) {
     addCategoryToDb(category);
-    const newPage = await browser.newPage();
     try {
-      await newPage.goto(categoryLinks[category]);
+      await page.goto(categoryLinks[category]);
 
-      const searchRcrds = await newPage.$$("section ol > li");
-
-      let bookList = [];
+      const searchRcrds = await page.$$("section ol > li");
 
       for (let i = 0; i < searchRcrds.length; i++) {
         const searchRcrd = searchRcrds[i];
@@ -68,25 +66,11 @@ import { addCategoryToDb } from "../sqlite/db_methods.js";
           rating: rating,
           category: category.toString(),
         });
-
-        bookList.push({
-          name: name,
-          price: price,
-          rating: rating,
-          category: category,
-        });
       }
-
-      categoryBookMap[category] = bookList;
     } catch (err) {
       console.error(err);
-    } finally {
-      await newPage.close();
     }
     break;
   }
-
-  // console.log(categoryBookMap);
-
   await browser.close();
 })();
