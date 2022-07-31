@@ -4,7 +4,7 @@ import { addCategoryToDb } from "../sqlite/db_methods.js";
 
 
 (async () => {
-  const browser = await launch({ headless: false });
+  const browser = await launch({ headless: false }, {args: ['--window-size=800,400']});
   const page = await browser.newPage();
   await page.goto("https://books.toscrape.com/");
 

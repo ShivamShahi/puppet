@@ -1,5 +1,5 @@
 import sqlite3 from "sqlite3";
-import { db } from "./get_db_conn.js";
+let db = new sqlite3.Database("sample.db");
 
 function getCategoryId(categoryName) {
   let sel_sql = `select * from categories where name = '${categoryName}'`;

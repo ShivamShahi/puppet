@@ -1,4 +1,5 @@
-import { db } from "./get_db_conn.js";
+import sqlite3 from "sqlite3";
+let db = new sqlite3.Database("sample.db");
 
 function createDb() {
   db.get("PRAGMA foreign_keys = ON");
